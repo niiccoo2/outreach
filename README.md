@@ -2,6 +2,8 @@
 
 Outreach is a simple program that should be able to use AI to automate general recearch and outreach for you.
 
+This is meant for continuous opperation. So once it is set up, if you run it again it will remain on the same task. If you want to switch tasks just remove the .env file.
+
 Order of operations:
 
 - Save prompt and API keys in .env
