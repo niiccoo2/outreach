@@ -17,6 +17,8 @@ parser.add_argument('--amount', type=int, default=5)
 parser.add_argument('--send-to-self', action='store_true')
 args = parser.parse_args()
 
+if args.send_to_self: print("Sending all emails to self.")
+
 number_of_emails: int = args.amount
 
 class Company(BaseModel):
