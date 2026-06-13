@@ -2,16 +2,22 @@ from google import genai
 import os
 from dotenv import load_dotenv
 import warnings
-from sys import platform
 from pydantic import BaseModel, Field
 from typing import List, Optional
 import ast
 from smtplib import SMTP_SSL as SMTP
 from email.mime.text import MIMEText
+import argparse
 
 warnings.simplefilter("ignore", UserWarning)
 
-number_of_emails: int = 20
+parser = argparse.ArgumentParser()
+
+parser.add_argument('--amount', type=int, default=5)
+parser.add_argument('--send-to-self', action='store_true')
+args = parser.parse_args()
+
+number_of_emails: int = args.amount
 
 class Company(BaseModel):
     name: str = Field(description="Name of the company.")
@@ -27,10 +33,7 @@ def create_dotenv():
   print("No .env file found. Starting setup.")
   with open(".env", "a") as f:
     f.write(f'API_KEY="{input("Enter Google AI API key: ")}"\n')
-    f.write(f'PROMPT="{input("""
-            Prompt should include who you are, if you are a person or a company, and any other required info for an email.\n
-            Enter prompt: 
-                             """)}"\n')
+    f.write(f'PROMPT="{input("Prompt should include who you are, if you are a person or a company, and any other required info for an email.\nEnter prompt: ")}"\n')
     f.write(f'SMTP_SERVER="{input("Enter SMTP server address: ")}"\n')
     f.write(f'SMTP_SENDER="{input("Enter SMTP sender address (might be same as username): ")}"\n')
     f.write(f'SMTP_USER="{input("Enter SMTP username: ")}"\n')
@@ -83,10 +86,13 @@ def draft_emails():
   for company in companies:
     interaction = client.interactions.create(
       model="gemini-3.5-flash",
-      input=f"""
-            Draft an email for the attached company that aligns with this outreach campaign. Make sure to use \\n to make new lines. '{os.getenv("PROMPT")}'.
-            Company: '{company}'.
-            """,
+      input = f"""
+              Draft a professional email for the attached company that aligns with this outreach campaign. '{os.getenv("PROMPT")}'.
+
+              Use standard paragraph breaks to separate sections cleanly. Do not include literal markdown or character symbols for newlines.
+
+              Company: '{company}'.
+              """,
       response_format={
           "type": "text",
           "mime_type": "application/json",
@@ -100,7 +106,10 @@ def draft_emails():
 def send_emails():
   print(f"Sending {number_of_emails} emails")
   for email in emails:
-    RECIPIENT = "nicosmith873@gmail.com"
+    if not args.send_to_self:  
+      RECIPIENT = email.to
+    else:
+      RECIPIENT = SMTP_SENDER
 
     msg = MIMEText(email.body, "plain")
     msg['Subject'] = email.subject
