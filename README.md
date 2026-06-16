@@ -25,7 +25,7 @@ If it doesn't see a .env file, then it should run through the setup process whic
 | Option           | Meaning                                                      |
 | ---------------- | ------------------------------------------------------------ |
 | `--amount 50`    | Changes the number of emails the program sends               |
-| `--send_to_self` | Sends all emails to SMTP sending address, useful for testing |
+| `--send-to-self` | Sends all emails to SMTP sending address, useful for testing |
 
 ## What it does
 
