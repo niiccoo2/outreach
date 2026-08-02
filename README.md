@@ -1,8 +1,8 @@
 ## Outreach
 
-Outreach is a simple program that uses google AI to automate general recearch and outreach for you.
+Outreach is a simple program that uses google AI to automate general research and outreach for you.
 
-This is meant for continuous opperation. So once it is set up, if you run it again it will remain on the same task. If you want to switch tasks just remove the .env file to restart setup.
+This is meant for continuous operation. So once it is set up, if you run it again it will remain on the same task. If you want to switch tasks just remove the .env file to restart setup.
 
 [Demo video](https://photos.nicosmith.net/s/outreach_demo)
 
@@ -18,7 +18,7 @@ Before you run the program, you should make sure you have the following pieces o
 
 ### Running the script
 
-If it doesn't see a .env file, then it should run through the setup process which will ask for all the required information. Then it will start recearching and sending all the emails.
+If it doesn't see a .env file, then it should run through the setup process which will ask for all the required information. Then it will start researching and sending all the emails.
 
 ### Options
 
